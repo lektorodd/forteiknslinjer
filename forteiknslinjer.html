@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fortegnsskjema-generator</title>
+    <title>Forteiknsskjemagenerator</title>
     
     <!-- MathJax for LaTeX Rendering -->
     <script>
@@ -19,12 +19,18 @@
     </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
     
+    <!-- Font import -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet">
+
     <style>
-        /* --- General Design --- */
+        /* --- General Design (Light Theme) --- */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f8f9fa;
-            color: #212529;
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa; /* Lys grå bakgrunn */
+            color: #2c3e50; /* Mørk tekst */
             display: flex;
             justify-content: center;
             padding: 2rem 1rem;
@@ -34,15 +40,16 @@
         .container {
             width: 100%;
             max-width: 800px;
-            background: #ffffff;
+            background: #ffffff; /* Kvit container */
             padding: 2rem;
             border-radius: 12px;
+            border: 1px solid #dee2e6;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
         }
 
         h1 {
             text-align: center;
-            color: #343a40;
+            color: #2c3e50;
             margin-bottom: 2rem;
             font-size: 1.8rem;
             font-weight: 700;
@@ -51,15 +58,17 @@
         /* --- Input Sections --- */
         .input-section {
             margin-bottom: 1.5rem;
-            border: 1px solid #dee2e6;
+            border: 1px solid #dee2e6; /* Tydlegare ramme */
             padding: 1.5rem;
             border-radius: 8px;
+            background-color: #fdfdfd; /* Subtil bakgrunnsfarge for djupn */
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02); /* Subtil skugge */
         }
 
         .input-section h2 {
             margin-top: 0;
             font-size: 1.2rem;
-            color: #495057;
+            color: #2c3e50;
             border-bottom: 1px solid #e9ecef;
             padding-bottom: 0.8rem;
             margin-bottom: 1rem;
@@ -86,12 +95,15 @@
             transition: border-color 0.2s, box-shadow 0.2s;
             padding-top: 1.1rem;
             padding-bottom: 1.1rem;
+            background-color: #ffffff;
+            color: #2c3e50;
+            font-family: 'JetBrains Mono', monospace;
         }
 
         .input-field:focus {
             outline: none;
-            border-color: #80bdff;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            border-color: #3498db;
+            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
         }
         
         .factor-controls {
@@ -109,7 +121,7 @@
             white-space: nowrap;
             font-size: 0.9em;
             height: 22px;
-            padding-left: 1px; /* FIX: Align text with button below */
+            padding-left: 1px;
         }
         
         .denominator-check {
@@ -124,7 +136,7 @@
             gap: 0.3rem;
             background: none;
             border: none;
-            color: #dc3545;
+            color: #e74c3c;
             cursor: pointer;
             transition: color 0.2s;
             padding: 0;
@@ -133,7 +145,7 @@
         }
         
         .remove-btn:hover {
-            color: #a71d2a;
+            color: #c0392b;
         }
 
         .remove-btn .cross {
@@ -143,18 +155,28 @@
         }
 
         .add-btn {
-            background-color: #007bff;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-image: linear-gradient(90deg, #3498db, #9E52FF);
             color: white;
             border: none;
-            padding: 0.6rem 1rem;
-            border-radius: 6px;
+            padding: 0.7rem 1.2rem;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.2s;
-            font-weight: 500;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+            transition: all 0.2s ease-in-out;
         }
 
         .add-btn:hover {
-            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);
+        }
+
+        .add-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
         }
 
         .main-controls {
@@ -164,45 +186,72 @@
         }
 
         .generate-btn {
-            background-color: #28a745;
+            background-image: linear-gradient(90deg, #3498db, #9E52FF);
             color: white;
             font-size: 1.2rem;
             padding: 0.8rem 2rem;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
             font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+            transition: all 0.2s ease-in-out;
         }
         
         .generate-btn:hover {
-            background-color: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);
         }
         .generate-btn:active {
-            transform: scale(0.98);
+            transform: translateY(0);
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
         }
 
         /* --- Output --- */
         #output {
             margin-top: 2.5rem;
-            padding: 1.5rem;
             border: 1px solid #e9ecef;
             border-radius: 8px;
             min-height: 100px;
-            overflow-x: auto; /* For smaller screens */
+            overflow: hidden;
+        }
+        #chart-container {
+            padding: 1.5rem;
+            background-color: #ffffff; /* Ensure white background for export */
+        }
+        #output-actions {
+            display: none; /* Hidden by default */
+            justify-content: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-top: 1px solid #e9ecef;
+            background-color: #fdfdfd;
+        }
+        .action-btn {
+            background-color: #ecf0f1;
+            color: #2c3e50;
+            border: 1px solid #bdc3c7;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .action-btn:hover {
+            background-color: #bdc3c7;
+            border-color: #7f8c8d;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Fortegnsskjema Generator 📊</h1>
+        <h1>Forteiknsskjemagenerator 🪄</h1>
 
-        <!-- Input for expression name -->
         <div class="input-section">
-            <h2>Innstillinger</h2>
+            <h2>Innstillingar</h2>
             <div class="input-group">
-                <input type="text" id="expression-name" class="input-field" value="f(x)" placeholder="Uttrykkets navn">
+                <input type="text" id="expression-name" class="input-field" value="f(x)" placeholder="Namn på uttrykket">
             </div>
             <div class="axis-inputs">
                 <div class="input-group">
@@ -214,16 +263,15 @@
             </div>
         </div>
         
-        <!-- Unified factors section -->
         <div class="input-section">
-            <h2>Faktorer</h2>
+            <h2>Faktorar</h2>
             <div id="factors-container">
                 <div class="input-group">
                     <input type="text" class="input-field factor" placeholder="f.eks. x - 2">
                     <div class="factor-controls">
                         <div class="checkbox-group">
                             <input type="checkbox" class="denominator-check" id="check-1">
-                            <label for="check-1">Nevner</label>
+                            <label for="check-1">Nemnar</label>
                         </div>
                         <button class="remove-btn" onclick="removeFactor(this)">
                             <span class="cross">×</span>
@@ -232,23 +280,37 @@
                     </div>
                 </div>
             </div>
-            <button class="add-btn" onclick="addFactor()">[+] Legg til faktor</button>
+            <button class="add-btn" onclick="addFactor()">Legg til faktor</button>
         </div>
 
-        <!-- Main generate button -->
         <div class="main-controls">
-            <button class="generate-btn" onclick="generateSignChart()">Lag fortegnsskjema</button>
+            <button class="generate-btn" onclick="generateSignChart()">Lag forteiknsskjema</button>
         </div>
 
-        <!-- Area where the sign chart will be drawn -->
         <div id="output">
-            <!-- The sign chart (SVG) and labels will be injected here -->
+            <div id="chart-container"></div>
+            <div id="output-actions">
+                <button class="action-btn" id="copy-btn">Kopier</button>
+                <button class="action-btn" id="download-btn">Last ned</button>
+            </div>
         </div>
 
     </div>
 
     <script>
         let factorIdCounter = 1;
+
+        // --- CONSTANTS ---
+        const PI_APPROX = 3.1415;
+        const E_APPROX = 2.7182;
+        const specialSymbols = new Map([
+            [PI_APPROX, '\\pi'], [-PI_APPROX, '-\\pi'],
+            [E_APPROX, 'e'], [-E_APPROX, '-e']
+        ]);
+
+        // --- EVENT LISTENERS ---
+        document.getElementById('download-btn').addEventListener('click', () => handleExport('download'));
+        document.getElementById('copy-btn').addEventListener('click', () => handleExport('copy'));
 
         // --- LOGIC FOR DYNAMIC INPUT FIELDS ---
         function addFactor() {
@@ -261,7 +323,7 @@
                 <div class="factor-controls">
                     <div class="checkbox-group">
                         <input type="checkbox" class="denominator-check" id="check-${factorIdCounter}">
-                        <label for="check-${factorIdCounter}">Nevner</label>
+                        <label for="check-${factorIdCounter}">Nemnar</label>
                     </div>
                     <button class="remove-btn" onclick="removeFactor(this)">
                         <span class="cross">×</span>
@@ -278,8 +340,10 @@
 
         // --- MAIN FUNCTION TO GENERATE THE SIGN CHART ---
         async function generateSignChart() {
-            const output = document.getElementById('output');
-            output.innerHTML = '';
+            const chartContainer = document.getElementById('chart-container');
+            const actions = document.getElementById('output-actions');
+            chartContainer.innerHTML = '';
+            actions.style.display = 'none';
 
             // 1. GATHER AND PARSE ALL FACTORS
             const name = document.getElementById('expression-name').value || 'f(x)';
@@ -302,11 +366,11 @@
             const allFactors = [...numFactors, ...denFactors];
             
             if (allFactors.length === 0) {
-                output.innerHTML = '<p style="text-align:center; color: #6c757d;">Legg til minst én faktor for å tegne et skjema.</p>';
+                chartContainer.innerHTML = '<p style="text-align:center; color: #7f8c8d;">Legg til minst éin faktor for å teikne eit skjema.</p>';
                 return;
             }
 
-            const points = [...new Set(allFactors.map(f => f.zero))].sort((a, b) => a - b);
+            const points = [...new Set(allFactors.filter(f => f.zero !== null).map(f => f.zero))].sort((a, b) => a - b);
 
             // 2. SETUP SVG CANVAS
             const PADDING = 100;
@@ -351,24 +415,40 @@
 
             // 3. DRAW X-AXIS AND GUIDELINES
             let y = ROW_HEIGHT;
-            svg.innerHTML += `<line x1="${PADDING - 10}" y1="${y}" x2="${CHART_WIDTH + PADDING + 10}" y2="${y}" stroke="#343a40" stroke-width="2"/>`;
-            svg.innerHTML += `<path d="M ${CHART_WIDTH + PADDING + 10} ${y - 5} L ${CHART_WIDTH + PADDING + 20} ${y} L ${CHART_WIDTH + PADDING + 10} ${y + 5} Z" fill="#343a40"/>`;
-            svg.innerHTML += `<text x="${CHART_WIDTH + PADDING + 30}" y="${y + 7}" font-family="Source Serif Pro, serif" font-style="italic" font-size="20px" fill="#343a40">x</text>`;
+            svg.innerHTML += `<line x1="${PADDING - 10}" y1="${y}" x2="${CHART_WIDTH + PADDING + 10}" y2="${y}" stroke="#2c3e50" stroke-width="2"/>`;
+            svg.innerHTML += `<path d="M ${CHART_WIDTH + PADDING + 10} ${y - 5} L ${CHART_WIDTH + PADDING + 20} ${y} L ${CHART_WIDTH + PADDING + 10} ${y + 5} Z" fill="#2c3e50"/>`;
+            addMathLabel(svg, 'x', CHART_WIDTH + PADDING + 35, y, { fontSize: '18px' });
             
-            const labelsToDraw = new Set(points);
+            const finalLabels = [];
+            const MIN_PIXEL_DISTANCE = 35; 
+
+            points.forEach(p => finalLabels.push({ value: p, isCritical: true }));
+
             const startTick = Math.ceil(domainMin);
             const endTick = Math.floor(domainMax);
-            for (let i = startTick; i <= endTick; i++) { labelsToDraw.add(i); }
+            for (let i = startTick; i <= endTick; i++) {
+                const isTooClose = finalLabels.some(label => {
+                    return Math.abs(scale(i) - scale(label.value)) < MIN_PIXEL_DISTANCE;
+                });
+                if (!isTooClose) {
+                    finalLabels.push({ value: i, isCritical: false });
+                }
+            }
 
-            labelsToDraw.forEach(p => {
+            finalLabels.forEach(label => {
+                const p = label.value;
                 const xPos = scale(p);
-                const isCriticalPoint = points.includes(p);
-                if (isCriticalPoint) {
+                let labelText = String(p);
+                
+                if (label.isCritical) {
                     svg.innerHTML += `<line x1="${xPos}" y1="${y}" x2="${xPos}" y2="${CHART_HEIGHT - ROW_HEIGHT / 2}" stroke="#adb5bd" stroke-width="1" stroke-dasharray="4 4"/>`;
-                    svg.innerHTML += `<text x="${xPos}" y="${y - 15}" text-anchor="middle" font-family="Source Serif Pro, serif" font-size="18px" font-weight="bold" fill="#212529">${p}</text>`;
+                    if (specialSymbols.has(p)) {
+                        labelText = specialSymbols.get(p);
+                    }
+                    addMathLabel(svg, labelText, xPos, y - 25, { isBold: true, fontSize: '18px', color: '#2c3e50' });
                 } else {
                     svg.innerHTML += `<line x1="${xPos}" y1="${y - 4}" x2="${xPos}" y2="${y + 4}" stroke="#ced4da" stroke-width="1"/>`;
-                    svg.innerHTML += `<text x="${xPos}" y="${y - 15}" text-anchor="middle" font-family="Source Serif Pro, serif" font-size="15px" fill="#6c757d">${p}</text>`;
+                    addMathLabel(svg, labelText, xPos, y - 25, { isBold: false, fontSize: '16px', color: '#6c757d' });
                 }
             });
 
@@ -377,12 +457,14 @@
                 y += ROW_HEIGHT;
                 addMathLabel(svg, factor.latex, 10, y, { align: 'left' });
                 drawSignLine(svg, y, factor.eval, PADDING, CHART_WIDTH, points, scale);
-                svg.innerHTML += `<circle cx="${scale(factor.zero)}" cy="${y}" r="4" fill="white" stroke="#007bff" stroke-width="2"/>`;
+                if (factor.zero !== null) {
+                    svg.innerHTML += `<circle cx="${scale(factor.zero)}" cy="${y}" r="4" fill="#f8f9fa" stroke="#3498db" stroke-width="2"/>`;
+                }
             });
 
             // 5. DRAW CONCLUSION LINE
             y += ROW_HEIGHT;
-            svg.innerHTML += `<line x1="0" y1="${y - ROW_HEIGHT/2}" x2="${CHART_WIDTH + 2 * PADDING}" y2="${y - ROW_HEIGHT/2}" stroke="#e9ecef" stroke-width="2"/>`;
+            svg.innerHTML += `<line x1="${PADDING - 10}" y1="${y - ROW_HEIGHT/2}" x2="${CHART_WIDTH + PADDING + 10}" y2="${y - ROW_HEIGHT/2}" stroke="#e9ecef" stroke-width="2"/>`;
             addMathLabel(svg, name, 10, y, { isBold: true, align: 'left' });
             
             const finalEval = x => {
@@ -394,25 +476,100 @@
             drawSignLine(svg, y, finalEval, PADDING, CHART_WIDTH, points, scale);
             
             numFactors.forEach(f => {
-                if (!denFactors.some(df => df.zero === f.zero)) {
-                    svg.innerHTML += `<circle cx="${scale(f.zero)}" cy="${y}" r="4" fill="white" stroke="#28a745" stroke-width="2"/>`;
+                if (f.zero !== null && !denFactors.some(df => df.zero === f.zero)) {
+                    svg.innerHTML += `<circle cx="${scale(f.zero)}" cy="${y}" r="4" fill="#f8f9fa" stroke="#2ecc71" stroke-width="2"/>`;
                 }
             });
             
             denFactors.forEach(f => {
-                const xPos = scale(f.zero);
-                const crossSize = 7;
-                svg.innerHTML += `<line x1="${xPos - crossSize}" y1="${y - crossSize}" x2="${xPos + crossSize}" y2="${y + crossSize}" stroke="#dc3545" stroke-width="2.5"/>`;
-                svg.innerHTML += `<line x1="${xPos + crossSize}" y1="${y - crossSize}" x2="${xPos - crossSize}" y2="${y + crossSize}" stroke="#dc3545" stroke-width="2.5"/>`;
+                if (f.zero !== null) {
+                    const xPos = scale(f.zero);
+                    const crossSize = 7;
+                    svg.innerHTML += `<line x1="${xPos - crossSize}" y1="${y - crossSize}" x2="${xPos + crossSize}" y2="${y + crossSize}" stroke="#e74c3c" stroke-width="2.5"/>`;
+                    svg.innerHTML += `<line x1="${xPos + crossSize}" y1="${y - crossSize}" x2="${xPos - crossSize}" y2="${y + crossSize}" stroke="#e74c3c" stroke-width="2.5"/>`;
+                }
             });
             
-            output.appendChild(svg);
-            await MathJax.typesetPromise([output]);
+            chartContainer.appendChild(svg);
+            await MathJax.typesetPromise([chartContainer]);
+            actions.style.display = 'flex';
         }
 
         // --- HELPER FUNCTIONS ---
+        async function handleExport(action) {
+            const chartContainer = document.getElementById('chart-container');
+            const button = action === 'copy' ? document.getElementById('copy-btn') : document.getElementById('download-btn');
+            const originalText = button.textContent;
+            button.textContent = 'Jobbar...';
+
+            try {
+                // FIX: New, robust export method
+                const svgElement = chartContainer.querySelector('svg').cloneNode(true);
+                const { width, height } = svgElement.viewBox.baseVal;
+                const scaleFactor = 2;
+
+                // Inline MathJax fonts
+                const mathjaxStyles = document.getElementById('MathJax-SVG-styles').innerHTML;
+                const styleElement = document.createElement('style');
+                styleElement.innerHTML = mathjaxStyles;
+                svgElement.prepend(styleElement);
+
+                const serializer = new XMLSerializer();
+                let svgString = serializer.serializeToString(svgElement);
+
+                const canvas = document.createElement('canvas');
+                canvas.width = width * scaleFactor;
+                canvas.height = height * scaleFactor;
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                const img = new Image();
+                const svgBlob = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
+                const url = URL.createObjectURL(svgBlob);
+
+                img.onload = function() {
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    URL.revokeObjectURL(url);
+
+                    if (action === 'download') {
+                        const link = document.createElement('a');
+                        link.download = 'fortegnsskjema.png';
+                        link.href = canvas.toDataURL('image/png');
+                        link.click();
+                        button.textContent = originalText;
+                    } else if (action === 'copy') {
+                        canvas.toBlob(async (blob) => {
+                            try {
+                                await navigator.clipboard.write([
+                                    new ClipboardItem({ 'image/png': blob })
+                                ]);
+                                button.textContent = 'Kopiert!';
+                            } catch (err) {
+                                console.error('Kunne ikkje kopiere:', err);
+                                button.textContent = 'Feil!';
+                            } finally {
+                                setTimeout(() => { button.textContent = originalText; }, 2000);
+                            }
+                        }, 'image/png');
+                    }
+                };
+                img.onerror = function(e) {
+                    console.error('Feil ved lasting av SVG-bilete for eksport:', e);
+                    button.textContent = 'Feil!';
+                    setTimeout(() => { button.textContent = originalText; }, 2000);
+                }
+                img.src = url;
+
+            } catch (err) {
+                console.error('Feil ved eksport:', err);
+                button.textContent = 'Feil!';
+                setTimeout(() => { button.textContent = originalText; }, 2000);
+            }
+        }
+
         function addMathLabel(svg, text, x, y, options = {}) {
-            const { color = 'black', fontSize = '16px', isBold = false, align = 'center' } = options;
+            const { color = '#2c3e50', fontSize = '16px', isBold = false, align = 'center' } = options;
             const fo = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
             
             const width = text.length * 12 + 50;
@@ -445,10 +602,16 @@
         }
 
         function stringToLatex(str) {
-            return str.replace(/(\d+)\s*\/\s*(\d+)/g, '\\frac{$1}{$2}');
+            return str.replace(/pi/gi, '\\pi').replace(/(\d+)\s*\/\s*(\d+)/g, '\\frac{$1}{$2}');
         }
 
-        function parseNumber(str) {
+        function parseValue(str) {
+            const lowerStr = str.toLowerCase();
+            if (lowerStr === 'pi') return PI_APPROX;
+            if (lowerStr === 'e') return E_APPROX;
+            if (lowerStr === '-pi') return -PI_APPROX;
+            if (lowerStr === '-e') return -E_APPROX;
+
             if (str.includes('/')) {
                 const parts = str.split('/');
                 const num = parseFloat(parts[0]);
@@ -465,28 +628,27 @@
             let match;
             let zero;
             let evalFunc;
-            const numPattern = '([\\d\\./]+)';
+            const numPattern = '([\\d\\./]+|pi|e|-pi|-e)';
 
-            // FIX: Handle standalone 'x' or '-x'
-            if (cleaned === 'x' || cleaned === '-x') {
-                const xSign = cleaned === 'x' ? 1 : -1;
+            if (cleaned.toLowerCase() === 'x' || cleaned.toLowerCase() === '-x') {
+                const xSign = cleaned.toLowerCase() === 'x' ? 1 : -1;
                 zero = 0;
                 evalFunc = x => xSign * x;
                 return { raw, latex: stringToLatex(raw), zero, eval: x => Math.sign(evalFunc(x)) };
             }
 
-            match = cleaned.match(new RegExp(`^(-?)x([+-])${numPattern}$`));
+            match = cleaned.match(new RegExp(`^(-?)x([+-])${numPattern}$`, 'i'));
             if (match) {
                 const xSign = match[1] === '-' ? -1 : 1;
                 const operator = match[2];
-                const val = parseNumber(match[3]);
+                const val = parseValue(match[3]);
                 const totalVal = (operator === '+') ? val : -val;
                 zero = -totalVal / xSign;
                 evalFunc = x => xSign * x + totalVal;
             } else {
-                match = cleaned.match(new RegExp(`^${numPattern}([+-])x$`));
+                match = cleaned.match(new RegExp(`^${numPattern}([+-])x$`, 'i'));
                 if (match) {
-                    const val = parseNumber(match[1]);
+                    const val = parseValue(match[1]);
                     const xSign = match[2] === '+' ? 1 : -1;
                     zero = val / -xSign;
                     evalFunc = x => val + xSign * x;
@@ -496,6 +658,17 @@
             if (match && !isNaN(zero)) {
                 return { raw, latex: stringToLatex(raw), zero, eval: x => Math.sign(evalFunc(x)) };
             }
+
+            const constantVal = parseValue(cleaned);
+            if (!isNaN(constantVal)) {
+                return { 
+                    raw, 
+                    latex: stringToLatex(raw), 
+                    zero: null,
+                    eval: x => Math.sign(constantVal) 
+                };
+            }
+
             return null;
         }
 
@@ -510,7 +683,7 @@
                 const x1 = (p1 === -Infinity) ? startX : scale(p1);
                 const x2 = (p2 === Infinity) ? startX + width : scale(p2);
                 const dashArray = sign < 0 ? '5 5' : 'none';
-                svg.innerHTML += `<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="#343a40" stroke-width="2" stroke-dasharray="${dashArray}"/>`;
+                svg.innerHTML += `<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="#2c3e50" stroke-width="2" stroke-dasharray="${dashArray}"/>`;
             }
         }
     </script>
