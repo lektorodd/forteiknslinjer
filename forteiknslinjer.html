@@ -710,7 +710,7 @@
             // 4. DRAW FACTOR LINES
             allFactors.forEach(factor => {
                 y += ROW_HEIGHT;
-                addMathLabel(svg, factor.latex, 15, y, { align: 'left', fontSize: '24px' });
+                addMathLabel(svg, factor.latex, PADDING / 2, y, { align: 'center', fontSize: '24px' });
                 drawSignLine(svg, y, factor.eval, PADDING, CHART_WIDTH, points, scale);
                 if (factor.zero !== null) {
                     svg.innerHTML += `<circle cx="${scale(factor.zero)}" cy="${y}" r="6" fill="#f8f9fa" stroke="#3498db" stroke-width="3"/>`;
@@ -720,7 +720,7 @@
             // 5. DRAW CONCLUSION LINE
             y += ROW_HEIGHT;
             svg.innerHTML += `<line x1="${PADDING - 10}" y1="${y - ROW_HEIGHT/2}" x2="${CHART_WIDTH + PADDING + 10}" y2="${y - ROW_HEIGHT/2}" stroke="#e9ecef" stroke-width="2"/>`;
-            addMathLabel(svg, name, 15, y, { isBold: true, align: 'left', fontSize: '24px' });
+            addMathLabel(svg, name, PADDING / 2, y, { isBold: true, align: 'center', fontSize: '24px' });
             
             const finalEval = x => {
                 const numResult = numFactors.reduce((acc, f) => acc * f.eval(x), 1);
