@@ -346,6 +346,29 @@
         .lang-btn:not(.active):hover {
             opacity: 0.8;
         }
+
+        .reorder-controls {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .reorder-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #bdc3c7;
+            font-size: 1.2em;
+            padding: 0 0.5rem;
+            transition: color 0.2s;
+        }
+        .reorder-btn:hover:not(:disabled) {
+            color: #3498db;
+        }
+        .reorder-btn:disabled {
+            color: #ecf0f1;
+            cursor: not-allowed;
+        }
+
     </style>
 </head>
 <body>
@@ -395,6 +418,10 @@
             </h2>
             <div id="factors-container">
                 <div class="input-group">
+                    <div class="reorder-controls">
+                        <button class="reorder-btn up-btn" onclick="moveFactorUp(this)">▲</button>
+                        <button class="reorder-btn down-btn" onclick="moveFactorDown(this)">▼</button>
+                    </div>
                     <input type="text" class="input-field factor" data-translate-placeholder="factorPlaceholder">
                     <div class="factor-controls">
                         <div class="checkbox-group">
@@ -408,11 +435,11 @@
                     </div>
                 </div>
             </div>
-            <button class="add-btn" onclick="addFactor()" data-translate="addFactorBtn">Legg til faktor</button>
+            <button class="add-btn" onclick="addFactor()">Legg til faktor</button>
         </div>
 
         <div class="main-controls">
-            <button class="generate-btn" onclick="generateSignChart()" data-translate="generateBtn">Lag forteiknsskjema</button>
+            <button class="generate-btn" onclick="generateSignChart()">Lag forteiknsskjema</button>
         </div>
 
         <div id="output">
@@ -507,6 +534,10 @@
             const div = document.createElement('div');
             div.className = 'input-group';
             div.innerHTML = `
+                <div class="reorder-controls">
+                    <button class="reorder-btn up-btn" onclick="moveFactorUp(this)">▲</button>
+                    <button class="reorder-btn down-btn" onclick="moveFactorDown(this)">▼</button>
+                </div>
                 <input type="text" class="input-field factor" data-translate-placeholder="factorPlaceholder">
                 <div class="factor-controls">
                     <div class="checkbox-group">
@@ -521,11 +552,42 @@
             `;
             container.appendChild(div);
             setLanguage(document.documentElement.lang); // Apply translation to new element
+            updateArrowStates();
         }
 
         function removeFactor(button) {
             button.closest('.input-group').remove();
+            updateArrowStates();
         }
+
+        function moveFactorUp(button) {
+            const group = button.closest('.input-group');
+            const prevGroup = group.previousElementSibling;
+            if (prevGroup) {
+                group.parentElement.insertBefore(group, prevGroup);
+                updateArrowStates();
+            }
+        }
+
+        function moveFactorDown(button) {
+            const group = button.closest('.input-group');
+            const nextGroup = group.nextElementSibling;
+            if (nextGroup) {
+                group.parentElement.insertBefore(nextGroup, group);
+                updateArrowStates();
+            }
+        }
+
+        function updateArrowStates() {
+            const allGroups = document.querySelectorAll('#factors-container .input-group');
+            allGroups.forEach((group, index) => {
+                const upBtn = group.querySelector('.up-btn');
+                const downBtn = group.querySelector('.down-btn');
+                if (upBtn) upBtn.disabled = (index === 0);
+                if (downBtn) downBtn.disabled = (index === allGroups.length - 1);
+            });
+        }
+
 
         // --- MAIN FUNCTION TO GENERATE THE SIGN CHART ---
         async function generateSignChart() {
@@ -944,8 +1006,9 @@
             }
         }
 
-        // Initial language setting
+        // Initial language and arrow states
         setLanguage('nn');
+        updateArrowStates();
     </script>
 </body>
 </html>
